@@ -1,0 +1,17 @@
+services:
+  flightproject.searchservice:
+    image: ${DOCKER_REGISTRY-}flightprojectsearchservice
+    container_name: flightproject.searchservice
+    build:
+      context: .
+      dockerfile: FlightProject.SearchService/Dockerfile
+  
+  flightproject.database:
+    image: postgres:latest
+    container_name: flightproject.database
+    environment:
+      - POSTGRES_DB=flightproject
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - 5432:5432
