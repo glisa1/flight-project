@@ -1,0 +1,19 @@
+services:
+  flightproject.webapi:
+    image: ${DOCKER_REGISTRY-}flightprojectwebapi
+    container_name: flightproject.webApi
+    build:
+      context: .
+      dockerfile: FlightProject.WebApi/Dockerfile
+
+  flightproject.database:
+    image: postgres:latest
+    container_name: flightproject.database
+    environment:
+      - POSTGRES_DB=flightproject
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - ./.containers/flightproject-db:/var/lib/postgresql/data
