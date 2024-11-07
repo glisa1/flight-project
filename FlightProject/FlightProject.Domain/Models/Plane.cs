@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using FlightProject.Domain.Models.Base;
+using System.ComponentModel.DataAnnotations;
 
 namespace FlightProject.Domain.Models;
 
-internal class Plane
+internal class Plane : Entity
 {
     [Required]
     [MaxLength(50)]

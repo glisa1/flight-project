@@ -1,0 +1,3 @@
+Go to the solutions folder and execute these commands.
+dotnet ef migrations add <migration_name> --startup-project FlightProject.WebApi --project FlightProject.Domain
+dotnet ef database update --startup-project FlightProject.WebApi --project FlightProject.Domain
