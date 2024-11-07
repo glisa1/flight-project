@@ -2,7 +2,7 @@
 
 namespace FlightProject.Domain.Models.Base;
 
-internal class Entity
+public class Entity
 {
     [Key]
     public int Id { get; set; }
