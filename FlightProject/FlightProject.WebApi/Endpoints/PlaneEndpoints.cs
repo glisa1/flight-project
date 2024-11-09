@@ -1,7 +1,6 @@
 ﻿using FlightProject.Application.Models.Commands;
 using FlightProject.Application.Models.Queries;
 using FlightProject.WebApi.Extensions;
-using FlightProject.WebApi.Models;
 using FluentValidation;
 using MediatR;
 
@@ -15,8 +14,6 @@ public static class PlaneEndpoints
         MapPlanePostEndpoints(application);
     }
 
-    #region Get
-
     private static void MapPlaneGetEndpoints(this WebApplication application)
     {
         MapGetPlaneById(application);
@@ -25,16 +22,11 @@ public static class PlaneEndpoints
 
     private static void MapGetPlaneById(this WebApplication application)
     {
-        application.MapGet("/plane/{id}", async (int id, CancellationToken token) =>
+        application.MapGet("/plane/{id}", async (GetPlaneByIdQuery query, IMediator mediator, CancellationToken token) =>
         {
-            //var result = await dbContext.Planes.FindAsync([id], token);
+            var result = await mediator.Send(query, token);
 
-            //if (result is null)
-            //{
-            //    return Results.NotFound();
-            //}
-
-            return Results.Ok(id);
+            return Results.Ok(result);
         })
         .WithName("GetPlaneById")
         .WithOpenApi();
@@ -53,10 +45,6 @@ public static class PlaneEndpoints
         .WithOpenApi();
     }
 
-    #endregion
-
-    #region Post
-
     private static void MapPlanePostEndpoints(this WebApplication application)
     {
         MapCreatePlane(application);
@@ -69,26 +57,6 @@ public static class PlaneEndpoints
             try
             {
                 await mediator.Send(command, token);
-                //CreatePlaneDTOValidator validator = new();
-
-                //await validator.ValidateAndThrowAsync(planeDto, token);
-
-                //var plane = new Plane
-                //{
-                //    Name = planeDto.Name,
-                //    NumberOfSeats = planeDto.NumberOfSeats,
-                //};
-
-                //var result = await dbContext.Planes.AddAsync(plane, token);
-
-                //if (result is null)
-                //{
-                //    return Results.Problem();
-                //}
-
-                //await dbContext.SaveChangesAsync(token);
-
-                //return Results.Created(string.Empty, new { result.Entity.Id });
 
                 return Results.Ok(command);
             }
@@ -105,5 +73,4 @@ public static class PlaneEndpoints
         .WithOpenApi();
     }
 
-    #endregion
 }

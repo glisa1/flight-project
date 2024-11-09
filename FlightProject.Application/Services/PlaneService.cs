@@ -8,8 +8,9 @@ using MediatR;
 
 namespace FlightProject.Application.Services;
 
-internal class PlaneService(IRepository<Plane> _repository) : 
+internal class PlaneService(IRepository<Plane> _repository) :
     IRequestHandler<GetPlanesQuery, IEnumerable<PlaneDto>>,
+    IRequestHandler<GetPlaneByIdQuery, PlaneDto>,
     IRequestHandler<CreatePlaneCommand>
 {
     private readonly IRepository<Plane> repository = _repository;
@@ -30,5 +31,12 @@ internal class PlaneService(IRepository<Plane> _repository) :
         };
 
         await repository.AddAsync(model, cancellationToken);
+    }
+
+    public async Task<PlaneDto> Handle(GetPlaneByIdQuery request, CancellationToken cancellationToken)
+    {
+        var result = await repository.GetAsync(request.Id, cancellationToken);
+
+        return result.MapToDto();
     }
 }

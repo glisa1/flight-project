@@ -12,10 +12,11 @@ namespace FlightProject.Application.Services;
 internal class ReservationService(
     IReservationRepository _reservationRepository,
     IRepository<Flight> _flightRepository
-    ) 
-    : 
+    )
+    :
     IRequestHandler<CreateReservationCommand>,
-    IRequestHandler<GetAllUserReservationsQuery, IEnumerable<ReservationDto>>
+    IRequestHandler<GetAllUserReservationsQuery, IEnumerable<ReservationDto>>,
+    IRequestHandler<GetReservationByIdQuery, ReservationDto>
 {
     private readonly IReservationRepository reservationRepository = _reservationRepository;
     private readonly IRepository<Flight> fligthRepository = _flightRepository;
@@ -39,5 +40,12 @@ internal class ReservationService(
         var reservations = await reservationRepository.GetAllReservationsForUserAsync(request.UserId, cancellationToken);
 
         return reservations.MapToDto();
+    }
+
+    public async Task<ReservationDto> Handle(GetReservationByIdQuery request, CancellationToken cancellationToken)
+    {
+        var result = await reservationRepository.GetAsync(request.Id, cancellationToken);
+
+        return result.MapToDto();
     }
 }

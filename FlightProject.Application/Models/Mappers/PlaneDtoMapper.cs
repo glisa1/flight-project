@@ -8,6 +8,13 @@ internal static class PlaneDtoMapper
     {
         ArgumentNullException.ThrowIfNull(planes, nameof(planes));
 
-        return planes.Select(x => new PlaneDto(x.Id, x.Name, x.NumberOfSeats));
+        return planes.Select(plane => plane.MapToDto());
+    }
+
+    internal static PlaneDto MapToDto(this Plane plane)
+    {
+        ArgumentNullException.ThrowIfNull(plane, nameof(plane));
+
+        return new PlaneDto(plane.Id, plane.Name, plane.NumberOfSeats);
     }
 }

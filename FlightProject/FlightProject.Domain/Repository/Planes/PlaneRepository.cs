@@ -3,9 +3,9 @@ using FlightProject.Domain.Extensions;
 using FlightProject.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace FlightProject.Domain.Repository;
+namespace FlightProject.Domain.Repository.Planes;
 
-internal class PlaneRepository(AppDbContext dbContext) : IRepository<Plane>
+internal class PlaneRepository(AppDbContext dbContext) : IPlaneRepository
 {
     private readonly AppDbContext _appDbContext = dbContext;
 

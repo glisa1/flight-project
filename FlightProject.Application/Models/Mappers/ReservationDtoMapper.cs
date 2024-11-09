@@ -8,9 +8,14 @@ internal static class ReservationDtoMapper
     {
         ArgumentNullException.ThrowIfNull(reservations, nameof(reservations));
 
-        return reservations.Select(reservation =>
-        {
-            return new ReservationDto
+        return reservations.Select(reservation => reservation.MapToDto());
+    }
+
+    internal static ReservationDto MapToDto(this Reservation reservation)
+    {
+        ArgumentNullException.ThrowIfNull(reservation, nameof(reservation));
+
+        return new ReservationDto
             (
                 reservation.Flight.Id,
                 reservation.Flight.Price,
@@ -20,6 +25,5 @@ internal static class ReservationDtoMapper
                 reservation.Flight.Destination.Name,
                 reservation.Flight.Plane.Name
             );
-        });
     }
 }

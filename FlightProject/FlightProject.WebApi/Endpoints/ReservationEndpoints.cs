@@ -1,5 +1,5 @@
-﻿using FlightProject.Application.Models.Queries;
-using FlightProject.WebApi.Models;
+﻿using FlightProject.Application.Models.Commands;
+using FlightProject.Application.Models.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,8 +13,6 @@ public static class ReservationEndpoints
         MapReservationPostEndpoints(application);
     }
 
-    #region Get
-
     private static void MapReservationGetEndpoints(this WebApplication application)
     {
         MapGetReservationById(application);
@@ -23,16 +21,11 @@ public static class ReservationEndpoints
 
     private static void MapGetReservationById(this WebApplication application)
     {
-        application.MapGet("/reservation/{id}", async (int id, CancellationToken token) =>
+        application.MapGet("/reservation/{id}", async (GetReservationByIdQuery query, IMediator mediator, CancellationToken token) =>
         {
-            //var result = await dbContext.Reservations.FindAsync([id], token);
+            var result = await mediator.Send(query, token);
 
-            //if (result is null)
-            //{
-            //    return Results.NotFound();
-            //}
-
-            return Results.Ok(id);
+            return Results.Ok(result);
         })
         .WithName("GetReservationById")
         .WithOpenApi();
@@ -40,7 +33,7 @@ public static class ReservationEndpoints
 
     private static void MapGetAllReservationsForUser(this WebApplication application)
     {
-        application.MapGet("/reservations", async ([FromBody]GetAllUserReservationsQuery getAllUserReservationsQuery, IMediator mediator, CancellationToken token) =>
+        application.MapGet("/reservations", async ([FromBody] GetAllUserReservationsQuery getAllUserReservationsQuery, IMediator mediator, CancellationToken token) =>
         {
             var result = await mediator.Send(getAllUserReservationsQuery, token);
 
@@ -50,10 +43,6 @@ public static class ReservationEndpoints
         .WithOpenApi();
     }
 
-    #endregion
-
-    #region Post
-
     private static void MapReservationPostEndpoints(this WebApplication application)
     {
         MapCreateReservation(application);
@@ -61,34 +50,13 @@ public static class ReservationEndpoints
 
     private static void MapCreateReservation(this WebApplication application)
     {
-        application.MapPost("/reservation", async (CreateReservationDTO reservationDto, CancellationToken token) =>
+        application.MapPost("/reservation", async (CreateReservationCommand command, IMediator mediator, CancellationToken token) =>
         {
             try
             {
-                //CreateReservationDTOValidator validator = new();
+                await mediator.Send(command, token);
 
-                //await validator.ValidateAndThrowAsync(reservationDto, token);
-
-                //var flight = await dbContext.Flights.SingleAsync(flight => flight.Id == reservationDto.FlightId, token);
-
-                //var reservation = new Reservation
-                //{
-                //    Flight = flight,
-                //    UserId = reservationDto.UserId
-                //};
-
-                //var result = await dbContext.Reservations.AddAsync(reservation, token);
-
-                //if (result is null)
-                //{
-                //    return Results.Problem();
-                //}
-
-                //await dbContext.SaveChangesAsync(token);
-
-                //return Results.Created(string.Empty, new { result.Entity.Id });
-
-                return Results.Ok(reservationDto);
+                return Results.Ok();
             }
             catch (Exception ex)
             {
@@ -98,7 +66,5 @@ public static class ReservationEndpoints
         .WithName("CreateReservation")
         .WithOpenApi();
     }
-
-    #endregion
 
 }
