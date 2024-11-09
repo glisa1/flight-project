@@ -1,4 +1,7 @@
 ﻿using FlightProject.Domain.Database;
+using FlightProject.Domain.Models;
+using FlightProject.Domain.Repository;
+using FlightProject.Domain.Repository.Reservations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,5 +15,9 @@ public static class ServiceCollectionExtensions
         {
             optionsBuilder.UseNpgsql(connectionString);
         });
+        services.AddScoped<IRepository<City>, CityRepository>();
+        services.AddScoped<IRepository<Flight>, FlightRepository>();
+        services.AddScoped<IRepository<Reservation>, ReservationRepository>();
+        services.AddScoped<IRepository<Plane>, PlaneRepository>();
     }
 }

@@ -1,5 +1,7 @@
+using FlightProject.Application.Extensions;
 using FlightProject.Domain.Extensions;
 using FlightProject.WebApi.Extensions;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,7 +10,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddAppServices();
 builder.Services.AddDomainServices(builder.Configuration["DbConnectionString"]!);
+
+builder.Services.AddMediatR(cfg =>
+{
+    cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+});
 
 var app = builder.Build();
 

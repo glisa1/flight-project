@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FlightProject.Domain.Models;
 
-internal class City : Entity
+public class City : Entity
 {
     [Required]
     [MaxLength(50)]

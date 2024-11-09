@@ -3,9 +3,9 @@ using FlightProject.Domain.Extensions;
 using FlightProject.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace FlightProject.Domain.Repository;
+namespace FlightProject.Domain.Repository.Reservations;
 
-internal class ReservationRepository(AppDbContext dbContext) : IRepository<Reservation>
+internal class ReservationRepository(AppDbContext dbContext) : IReservationRepository
 {
     private readonly AppDbContext _appDbContext = dbContext;
 
@@ -45,5 +45,15 @@ internal class ReservationRepository(AppDbContext dbContext) : IRepository<Reser
         _appDbContext.Reservations.Update(entity);
 
         await _appDbContext.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task<IEnumerable<Reservation>> GetAllAsync(CancellationToken cancellationToken = default)
+    {
+        return await _appDbContext.Reservations.ToListAsync(cancellationToken);
+    }
+
+    public async Task<IEnumerable<Reservation>> GetAllReservationsForUserAsync(int userId, CancellationToken token = default)
+    {
+        return await _appDbContext.Reservations.Where(reservation => reservation.UserId == userId).ToListAsync(token);
     }
 }

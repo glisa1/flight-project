@@ -1,6 +1,9 @@
-﻿using FlightProject.WebApi.Extensions;
+﻿using FlightProject.Application.Models.Commands;
+using FlightProject.Application.Models.Queries;
+using FlightProject.WebApi.Extensions;
 using FlightProject.WebApi.Models;
 using FluentValidation;
+using MediatR;
 
 namespace FlightProject.WebApi.Endpoints;
 
@@ -39,11 +42,12 @@ public static class PlaneEndpoints
 
     private static void MapGetAllPlanes(this WebApplication application)
     {
-        application.MapGet("/planes", async (CancellationToken token) =>
+        application.MapGet("/planes", async (IMediator mediator, CancellationToken token) =>
         {
+            var result = await mediator.Send(new GetPlanesQuery(), token);
             //var result = await dbContext.Planes.ToListAsync(token);
 
-            return Results.Ok();
+            return Results.Ok(result);
         })
         .WithName("GetAllPlanes")
         .WithOpenApi();
@@ -60,10 +64,11 @@ public static class PlaneEndpoints
 
     private static void MapCreatePlane(this WebApplication application)
     {
-        application.MapPost("/plane", async (CreatePlaneDTO planeDto, CancellationToken token) =>
+        application.MapPost("/plane", async (CreatePlaneCommand planeDto, IMediator mediator, CancellationToken token) =>
         {
             try
             {
+                await mediator.Send(planeDto, token);
                 //CreatePlaneDTOValidator validator = new();
 
                 //await validator.ValidateAndThrowAsync(planeDto, token);

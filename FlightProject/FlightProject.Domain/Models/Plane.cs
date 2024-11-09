@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FlightProject.Domain.Models;
 
-internal class Plane : Entity
+public class Plane : Entity
 {
     [Required]
     [MaxLength(50)]

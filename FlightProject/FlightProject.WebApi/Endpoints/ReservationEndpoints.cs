@@ -1,4 +1,6 @@
-﻿using FlightProject.WebApi.Models;
+﻿using FlightProject.Application.Models.Queries;
+using FlightProject.WebApi.Models;
+using MediatR;
 
 namespace FlightProject.WebApi.Endpoints;
 
@@ -15,7 +17,7 @@ public static class ReservationEndpoints
     private static void MapReservationGetEndpoints(this WebApplication application)
     {
         MapGetReservationById(application);
-        MapGetAllReservations(application);
+        MapGetAllReservationsForUser(application);
     }
 
     private static void MapGetReservationById(this WebApplication application)
@@ -35,13 +37,13 @@ public static class ReservationEndpoints
         .WithOpenApi();
     }
 
-    private static void MapGetAllReservations(this WebApplication application)
+    private static void MapGetAllReservationsForUser(this WebApplication application)
     {
-        application.MapGet("/reservations", async (CancellationToken token) =>
+        application.MapGet("/reservations", async (GetAllUserReservationsQuery query, IMediator mediator, CancellationToken token) =>
         {
-            //var result = await dbContext.Reservations.ToListAsync(token);
+            var result = await mediator.Send(query, token);
 
-            return Results.Ok();
+            return Results.Ok(result);
         })
         .WithName("GetAllReservations")
         .WithOpenApi();

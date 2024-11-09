@@ -1,6 +1,9 @@
-﻿using FlightProject.WebApi.Extensions;
+﻿using FlightProject.Application.Models.Commands;
+using FlightProject.Application.Models.Queries;
+using FlightProject.WebApi.Extensions;
 using FlightProject.WebApi.Models;
 using FluentValidation;
+using MediatR;
 
 namespace FlightProject.WebApi.Endpoints;
 
@@ -39,11 +42,11 @@ public static class CityEndpoints
 
     private static void MapGetAllCities(this WebApplication application)
     {
-        application.MapGet("/cities", async (CancellationToken token) =>
+        application.MapGet("/cities", async (IMediator mediator, CancellationToken token) =>
         {
-            //var result = await dbContext.Cities.ToListAsync(token);
+            var result = await mediator.Send(new GetCitiesQuery(), token);
 
-            return Results.Ok();
+            return Results.Ok(result);
         })
         .WithName("GetAllCities")
         .WithOpenApi();
@@ -60,10 +63,11 @@ public static class CityEndpoints
 
     private static void MapCreateCity(this WebApplication application)
     {
-        application.MapPost("/city", async (CreateCityDTO cityDto, CancellationToken token) =>
+        application.MapPost("/city", async (CreateCityCommand command, IMediator mediator, CancellationToken token) =>
         {
             try
             {
+                await mediator.Send(command, token);
                 //CreateCityDTOValidator validator = new();
 
                 //await validator.ValidateAndThrowAsync(cityDto, token);
@@ -84,7 +88,7 @@ public static class CityEndpoints
 
                 //return Results.Created(string.Empty, new { result.Entity.Id });
 
-                return Results.Ok(cityDto);
+                return Results.Ok();
             }
             catch (ValidationException ve)
             {

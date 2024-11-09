@@ -2,7 +2,7 @@
 
 namespace FlightProject.Domain.Models;
 
-internal class Reservation : Entity
+public class Reservation : Entity
 {
     public required Flight Flight { get; set; }
     public int UserId { get; set; }

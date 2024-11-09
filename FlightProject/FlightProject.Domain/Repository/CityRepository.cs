@@ -46,4 +46,9 @@ internal class CityRepository(AppDbContext dbContext) : IRepository<City>
 
         await _appDbContext.SaveChangesAsync(cancellationToken);
     }
+
+    public async Task<IEnumerable<City>> GetAllAsync(CancellationToken cancellationToken = default)
+    {
+        return await _appDbContext.Cities.ToListAsync(cancellationToken);
+    }
 }

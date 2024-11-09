@@ -46,4 +46,9 @@ internal class PlaneRepository(AppDbContext dbContext) : IRepository<Plane>
 
         await _appDbContext.SaveChangesAsync(cancellationToken);
     }
+
+    public async Task<IEnumerable<Plane>> GetAllAsync(CancellationToken cancellationToken = default)
+    {
+        return await _appDbContext.Planes.ToListAsync(cancellationToken);
+    }
 }

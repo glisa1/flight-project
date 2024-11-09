@@ -6,12 +6,12 @@ public static class EntityExtensions
 {
     public static void SetCreatedOnAndUpdatedOn(this Entity entity)
     {
-        entity.CreatedOn = DateTime.Now;
+        entity.CreatedOn = DateTime.UtcNow;
         entity.SetUpdatedOn();
     }
 
     public static void SetUpdatedOn(this Entity entity)
     {
-        entity.UpdatedOn = DateTime.Now;
+        entity.UpdatedOn = DateTime.UtcNow;
     }
 }
