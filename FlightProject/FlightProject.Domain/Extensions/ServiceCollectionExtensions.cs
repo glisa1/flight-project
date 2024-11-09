@@ -17,7 +17,7 @@ public static class ServiceCollectionExtensions
         });
         services.AddScoped<IRepository<City>, CityRepository>();
         services.AddScoped<IRepository<Flight>, FlightRepository>();
-        services.AddScoped<IRepository<Reservation>, ReservationRepository>();
+        services.AddScoped<IReservationRepository, ReservationRepository>();
         services.AddScoped<IRepository<Plane>, PlaneRepository>();
     }
 }

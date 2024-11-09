@@ -11,5 +11,7 @@ public class Flight : Entity
     [Required]
     public DateTime Departure { get; set; }
     [Required]
+    public DateTime Arrival { get; set; }
+    [Required]
     public double Price { get; set; }
 }

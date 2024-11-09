@@ -15,7 +15,7 @@ internal static class ReservationDtoMapper
                 reservation.Flight.Id,
                 reservation.Flight.Price,
                 reservation.Flight.Departure,
-                DateTime.UtcNow,//reservation.Flight.Arrival
+                reservation.Flight.Arrival,
                 reservation.Flight.Source.Name,
                 reservation.Flight.Destination.Name,
                 reservation.Flight.Plane.Name
