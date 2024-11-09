@@ -64,11 +64,11 @@ public static class PlaneEndpoints
 
     private static void MapCreatePlane(this WebApplication application)
     {
-        application.MapPost("/plane", async (CreatePlaneCommand planeDto, IMediator mediator, CancellationToken token) =>
+        application.MapPost("/plane", async (CreatePlaneCommand command, IMediator mediator, CancellationToken token) =>
         {
             try
             {
-                await mediator.Send(planeDto, token);
+                await mediator.Send(command, token);
                 //CreatePlaneDTOValidator validator = new();
 
                 //await validator.ValidateAndThrowAsync(planeDto, token);
@@ -90,7 +90,7 @@ public static class PlaneEndpoints
 
                 //return Results.Created(string.Empty, new { result.Entity.Id });
 
-                return Results.Ok(planeDto);
+                return Results.Ok(command);
             }
             catch (ValidationException ve)
             {
