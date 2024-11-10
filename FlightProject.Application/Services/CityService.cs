@@ -4,12 +4,13 @@ using FlightProject.Application.Models.Mappers;
 using FlightProject.Application.Models.Queries;
 using FlightProject.Domain.Models;
 using FlightProject.Domain.Repository;
+using FlightProject.Domain.Repository.Cities;
 using MediatR;
 
 namespace FlightProject.Application.Services;
 
-internal class CityService(IRepository<City> repository) :
-    IRequestHandler<GetCitiesQuery, IEnumerable<CityDto>>, 
+internal class CityService(ICityRepository repository) :
+    IRequestHandler<GetCitiesQuery, IEnumerable<CityDto>>,
     IRequestHandler<CreateCityCommand>
 {
     private readonly IRepository<City> _repository = repository;

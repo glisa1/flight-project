@@ -4,11 +4,12 @@ using FlightProject.Application.Models.Mappers;
 using FlightProject.Application.Models.Queries;
 using FlightProject.Domain.Models;
 using FlightProject.Domain.Repository;
+using FlightProject.Domain.Repository.Planes;
 using MediatR;
 
 namespace FlightProject.Application.Services;
 
-internal class PlaneService(IRepository<Plane> _repository) :
+internal class PlaneService(IPlaneRepository _repository) :
     IRequestHandler<GetPlanesQuery, IEnumerable<PlaneDto>>,
     IRequestHandler<GetPlaneByIdQuery, PlaneDto>,
     IRequestHandler<CreatePlaneCommand>

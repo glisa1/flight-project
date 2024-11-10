@@ -3,6 +3,7 @@ using FlightProject.Application.Models.Queries;
 using FlightProject.WebApi.Extensions;
 using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FlightProject.WebApi.Endpoints;
 
@@ -38,7 +39,7 @@ public static class CityEndpoints
 
     private static void MapCreateCity(this WebApplication application)
     {
-        application.MapPost("/city", async (CreateCityCommand command, IMediator mediator, CancellationToken token) =>
+        application.MapPost("/city", async ([FromBody] CreateCityCommand command, IMediator mediator, CancellationToken token) =>
         {
             try
             {

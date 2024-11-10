@@ -21,7 +21,7 @@ public static class ReservationEndpoints
 
     private static void MapGetReservationById(this WebApplication application)
     {
-        application.MapGet("/reservation/{id}", async (GetReservationByIdQuery query, IMediator mediator, CancellationToken token) =>
+        application.MapGet("/reservation/{id}", async ([FromBody] GetReservationByIdQuery query, IMediator mediator, CancellationToken token) =>
         {
             var result = await mediator.Send(query, token);
 
@@ -50,7 +50,7 @@ public static class ReservationEndpoints
 
     private static void MapCreateReservation(this WebApplication application)
     {
-        application.MapPost("/reservation", async (CreateReservationCommand command, IMediator mediator, CancellationToken token) =>
+        application.MapPost("/reservation", async ([FromBody] CreateReservationCommand command, IMediator mediator, CancellationToken token) =>
         {
             try
             {

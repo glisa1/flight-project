@@ -3,6 +3,7 @@ using FlightProject.Application.Models.Queries;
 using FlightProject.WebApi.Extensions;
 using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FlightProject.WebApi.Endpoints;
 
@@ -22,7 +23,7 @@ public static class PlaneEndpoints
 
     private static void MapGetPlaneById(this WebApplication application)
     {
-        application.MapGet("/plane/{id}", async (GetPlaneByIdQuery query, IMediator mediator, CancellationToken token) =>
+        application.MapGet("/plane/{id}", async ([FromBody] GetPlaneByIdQuery query, IMediator mediator, CancellationToken token) =>
         {
             var result = await mediator.Send(query, token);
 
@@ -37,7 +38,6 @@ public static class PlaneEndpoints
         application.MapGet("/planes", async (IMediator mediator, CancellationToken token) =>
         {
             var result = await mediator.Send(new GetPlanesQuery(), token);
-            //var result = await dbContext.Planes.ToListAsync(token);
 
             return Results.Ok(result);
         })
@@ -52,7 +52,7 @@ public static class PlaneEndpoints
 
     private static void MapCreatePlane(this WebApplication application)
     {
-        application.MapPost("/plane", async (CreatePlaneCommand command, IMediator mediator, CancellationToken token) =>
+        application.MapPost("/plane", async ([FromBody] CreatePlaneCommand command, IMediator mediator, CancellationToken token) =>
         {
             try
             {

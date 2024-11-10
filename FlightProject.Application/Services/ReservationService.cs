@@ -4,6 +4,7 @@ using FlightProject.Application.Models.Mappers;
 using FlightProject.Application.Models.Queries;
 using FlightProject.Domain.Models;
 using FlightProject.Domain.Repository;
+using FlightProject.Domain.Repository.Flights;
 using FlightProject.Domain.Repository.Reservations;
 using MediatR;
 
@@ -11,7 +12,7 @@ namespace FlightProject.Application.Services;
 
 internal class ReservationService(
     IReservationRepository _reservationRepository,
-    IRepository<Flight> _flightRepository
+    IFlightRepository _flightRepository
     )
     :
     IRequestHandler<CreateReservationCommand>,
