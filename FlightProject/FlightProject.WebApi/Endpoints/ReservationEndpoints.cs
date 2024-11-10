@@ -21,9 +21,9 @@ public static class ReservationEndpoints
 
     private static void MapGetReservationById(this WebApplication application)
     {
-        application.MapGet("/reservation/{id}", async ([FromBody] GetReservationByIdQuery query, IMediator mediator, CancellationToken token) =>
+        application.MapGet("/reservation/{id}", async (int id, IMediator mediator, CancellationToken token) =>
         {
-            var result = await mediator.Send(query, token);
+            var result = await mediator.Send(new GetReservationByIdQuery { Id = id }, token);
 
             return Results.Ok(result);
         })
@@ -33,13 +33,16 @@ public static class ReservationEndpoints
 
     private static void MapGetAllReservationsForUser(this WebApplication application)
     {
-        application.MapGet("/reservations", async ([FromBody] GetAllUserReservationsQuery getAllUserReservationsQuery, IMediator mediator, CancellationToken token) =>
+        application.MapGet("/user-reservations/{userId}", async (int userId, IMediator mediator, CancellationToken token) =>
         {
-            var result = await mediator.Send(getAllUserReservationsQuery, token);
+            var result = await mediator.Send(new GetAllUserReservationsQuery
+            {
+                UserId = userId
+            }, token);
 
             return Results.Ok(result);
         })
-        .WithName("GetAllReservations")
+        .WithName("GetAllUserReservations")
         .WithOpenApi();
     }
 

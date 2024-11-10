@@ -31,7 +31,9 @@ internal class ReservationRepository(AppDbContext dbContext) : IReservationRepos
     public async Task<Reservation> GetAsync(int id, CancellationToken cancellationToken = default)
     {
         var result = await _appDbContext.Reservations
-            .AsNoTracking()
+            .Include(reservation => reservation.Flight.Plane)
+            .Include(reservation => reservation.Flight.Source)
+            .Include(reservation => reservation.Flight.Destination)
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
         ArgumentNullException.ThrowIfNull(result);
@@ -54,6 +56,10 @@ internal class ReservationRepository(AppDbContext dbContext) : IReservationRepos
 
     public async Task<IEnumerable<Reservation>> GetAllReservationsForUserAsync(int userId, CancellationToken token = default)
     {
-        return await _appDbContext.Reservations.Where(reservation => reservation.UserId == userId).ToListAsync(token);
+        return await _appDbContext.Reservations
+            .Include(reservation => reservation.Flight.Plane)
+            .Include(reservation => reservation.Flight.Source)
+            .Include(reservation => reservation.Flight.Destination)
+            .Where(reservation => reservation.UserId == userId).ToListAsync(token);
     }
 }

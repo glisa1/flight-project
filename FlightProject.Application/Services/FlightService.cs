@@ -36,22 +36,22 @@ internal class FlightService(IFlightRepository flightRepository, IPlaneRepositor
 
     public async Task Handle(CreateFlightCommand request, CancellationToken cancellationToken)
     {
-        var plane = await _planeRepository.GetAsync(request.PlaneId, cancellationToken);
-        ArgumentNullException.ThrowIfNull(plane, nameof(plane));
+        //var plane = await _planeRepository.GetAsync(request.PlaneId, cancellationToken);
+        //ArgumentNullException.ThrowIfNull(plane, nameof(plane));
 
-        var sourceCity = await _cityRepository.GetAsync(request.SourceCityId, cancellationToken);
-        ArgumentNullException.ThrowIfNull(sourceCity, nameof(sourceCity));
+        //var sourceCity = await _cityRepository.GetAsync(request.SourceCityId, cancellationToken);
+        //ArgumentNullException.ThrowIfNull(sourceCity, nameof(sourceCity));
 
-        var destinationCity = await _cityRepository.GetAsync(request.DestinationCityId, cancellationToken);
-        ArgumentNullException.ThrowIfNull(destinationCity, nameof(destinationCity));
+        //var destinationCity = await _cityRepository.GetAsync(request.DestinationCityId, cancellationToken);
+        //ArgumentNullException.ThrowIfNull(destinationCity, nameof(destinationCity));
 
         var model = new Flight
         {
             Arrival = request.Arrival,
             Departure = request.Departure,
-            Destination = destinationCity,
-            Plane = plane,
-            Source = sourceCity,
+            DestinationId = request.DestinationCityId,
+            PlaneId = request.PlaneId,
+            SourceId = request.SourceCityId,
             Price = request.Price,
         };
 

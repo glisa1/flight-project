@@ -31,6 +31,9 @@ internal class FlightRepository(AppDbContext dbContext) : IFlightRepository
     public async Task<Flight> GetAsync(int id, CancellationToken cancellationToken = default)
     {
         var result = await _appDbContext.Flights
+            .Include(flight => flight.Plane)
+            .Include(flight => flight.Source)
+            .Include(flight => flight.Destination)
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
@@ -49,6 +52,10 @@ internal class FlightRepository(AppDbContext dbContext) : IFlightRepository
 
     public async Task<IEnumerable<Flight>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        return await _appDbContext.Flights.ToListAsync(cancellationToken);
+        return await _appDbContext.Flights
+            .Include(flight => flight.Plane)
+            .Include(flight => flight.Source)
+            .Include(flight => flight.Destination)
+            .ToListAsync(cancellationToken);
     }
 }

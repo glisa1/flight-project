@@ -23,9 +23,9 @@ public static class PlaneEndpoints
 
     private static void MapGetPlaneById(this WebApplication application)
     {
-        application.MapGet("/plane/{id}", async ([FromBody] GetPlaneByIdQuery query, IMediator mediator, CancellationToken token) =>
+        application.MapGet("/plane/{id}", async (int id, IMediator mediator, CancellationToken token) =>
         {
-            var result = await mediator.Send(query, token);
+            var result = await mediator.Send(new GetPlaneByIdQuery { Id = id }, token);
 
             return Results.Ok(result);
         })

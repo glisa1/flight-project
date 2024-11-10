@@ -23,13 +23,9 @@ internal class ReservationService(
     private readonly IRepository<Flight> fligthRepository = _flightRepository;
     public async Task Handle(CreateReservationCommand request, CancellationToken cancellationToken)
     {
-        var flight = await fligthRepository.GetAsync(request.FlightId, cancellationToken);
-
-        ArgumentNullException.ThrowIfNull(flight, nameof(flight));
-
         var model = new Reservation
         {
-            Flight = flight,
+            FlightId = request.FlightId,
             UserId = request.UserId,
         };
 

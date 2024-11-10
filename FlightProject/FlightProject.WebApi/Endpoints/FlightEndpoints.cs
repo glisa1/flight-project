@@ -25,9 +25,9 @@ public static class FlightEndpoints
 
     private static void MapGetFlightById(this WebApplication application)
     {
-        application.MapGet("/flight/{id}", async ([FromBody] GetFlightByIdQuery query, IMediator mediator, CancellationToken token) =>
+        application.MapGet("/flight/{id}", async (int id, IMediator mediator, CancellationToken token) =>
         {
-            var result = await mediator.Send(query, token);
+            var result = await mediator.Send(new GetFlightByIdQuery { FlightId = id }, token);
 
             return Results.Ok(result);
         })

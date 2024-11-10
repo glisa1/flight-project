@@ -5,13 +5,16 @@ namespace FlightProject.Domain.Models;
 
 public class Flight : Entity
 {
-    public required City Source { get; set; }
-    public required City Destination { get; set; }
-    public required Plane Plane { get; set; }
+    public City Source { get; set; }
+    public required int SourceId { get; set; }
+    public City Destination { get; set; }
+    public required int DestinationId { get; set; }
+    public Plane Plane { get; set; }
+    public required int PlaneId { get; set; }
     [Required]
-    public DateTime Departure { get; set; }
+    public required DateTime Departure { get; set; }
     [Required]
-    public DateTime Arrival { get; set; }
+    public required DateTime Arrival { get; set; }
     [Required]
-    public double Price { get; set; }
+    public required double Price { get; set; }
 }
