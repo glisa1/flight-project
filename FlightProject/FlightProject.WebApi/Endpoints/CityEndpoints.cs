@@ -1,6 +1,5 @@
 ﻿using FlightProject.Application.Models.Commands;
 using FlightProject.Application.Models.Queries;
-using FlightProject.WebApi.Extensions;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -49,7 +48,9 @@ public static class CityEndpoints
             }
             catch (ValidationException ve)
             {
-                return Results.ValidationProblem(ve.AsProblemsDictionary());
+                //ve.Errors.Select()
+                //return Results.ValidationProblem(ve.Errors);
+                throw new NotImplementedException();
             }
             catch (Exception ex)
             {

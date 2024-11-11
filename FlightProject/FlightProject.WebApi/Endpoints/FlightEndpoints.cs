@@ -1,6 +1,5 @@
 ﻿using FlightProject.Application.Models.Commands;
 using FlightProject.Application.Models.Queries;
-using FlightProject.WebApi.Extensions;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -67,10 +66,10 @@ public static class FlightEndpoints
                 return Results.Ok();
 
             }
-            catch (ValidationException ve)
-            {
-                return Results.ValidationProblem(ve.AsProblemsDictionary());
-            }
+            //catch (ValidationException ve)
+            //{
+            //    return Results.ValidationProblem(ve.AsProblemsDictionary());
+            //}
             catch (Exception ex)
             {
                 return Results.Problem(ex.Message);
