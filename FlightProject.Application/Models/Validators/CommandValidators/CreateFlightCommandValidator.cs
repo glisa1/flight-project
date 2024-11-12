@@ -11,7 +11,7 @@ internal class CreateFlightCommandValidator : AbstractValidator<CreateFlightComm
         RuleFor(command => command.DestinationCityId).NotEmpty().GreaterThan(0);
         RuleFor(command => command.PlaneId).NotEmpty().GreaterThan(0);
 
-        RuleFor(command => command.Departure).LessThan(command => command.Arrival);
+        RuleFor(command => command.Arrival).GreaterThan(command => command.Departure);
 
         RuleFor(command => command.Price).NotEmpty().GreaterThan(0);
     }
