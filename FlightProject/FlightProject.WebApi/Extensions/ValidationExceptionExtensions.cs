@@ -11,7 +11,7 @@ public static class ValidationExceptionExtensions
             .Select(group => KeyValuePair.Create(
 
                 group.Key,
-                new List<string>(group.Select(groupElement => groupElement.ErrorMessage)).ToArray()
+                group.Select(groupElement => groupElement.ErrorMessage).ToArray()
             )).ToDictionary();
 
         return groupResult;
