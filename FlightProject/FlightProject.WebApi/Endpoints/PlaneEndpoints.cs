@@ -1,5 +1,6 @@
 ﻿using FlightProject.Application.Models.Commands;
 using FlightProject.Application.Models.Queries;
+using FlightProject.WebApi.Extensions;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -24,9 +25,20 @@ public static class PlaneEndpoints
     {
         application.MapGet("/plane/{id}", async (int id, IMediator mediator, CancellationToken token) =>
         {
-            var result = await mediator.Send(new GetPlaneByIdQuery { Id = id }, token);
+            try
+            {
+                var result = await mediator.Send(new GetPlaneByIdQuery { Id = id }, token);
 
-            return Results.Ok(result);
+                return Results.Ok(result);
+            }
+            catch (ValidationException ve)
+            {
+                return Results.ValidationProblem(ve.AsProblemsDictionary());
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.Message);
+            }
         })
         .WithName("GetPlaneById")
         .WithOpenApi();
@@ -36,9 +48,16 @@ public static class PlaneEndpoints
     {
         application.MapGet("/planes", async (IMediator mediator, CancellationToken token) =>
         {
-            var result = await mediator.Send(new GetPlanesQuery(), token);
+            try
+            {
+                var result = await mediator.Send(new GetPlanesQuery(), token);
 
-            return Results.Ok(result);
+                return Results.Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.Message);
+            }
         })
         .WithName("GetAllPlanes")
         .WithOpenApi();
@@ -59,10 +78,10 @@ public static class PlaneEndpoints
 
                 return Results.Ok(command);
             }
-            //catch (ValidationException ve)
-            //{
-            //    return Results.ValidationProblem(ve.AsProblemsDictionary());
-            //}
+            catch (ValidationException ve)
+            {
+                return Results.ValidationProblem(ve.AsProblemsDictionary());
+            }
             catch (Exception ex)
             {
                 return Results.Problem(ex.Message);

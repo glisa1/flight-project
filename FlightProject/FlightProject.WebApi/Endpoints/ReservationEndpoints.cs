@@ -1,5 +1,7 @@
 ﻿using FlightProject.Application.Models.Commands;
 using FlightProject.Application.Models.Queries;
+using FlightProject.WebApi.Extensions;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,9 +25,20 @@ public static class ReservationEndpoints
     {
         application.MapGet("/reservation/{id}", async (int id, IMediator mediator, CancellationToken token) =>
         {
-            var result = await mediator.Send(new GetReservationByIdQuery { Id = id }, token);
+            try
+            {
+                var result = await mediator.Send(new GetReservationByIdQuery { Id = id }, token);
 
-            return Results.Ok(result);
+                return Results.Ok(result);
+            }
+            catch (ValidationException ve)
+            {
+                return Results.ValidationProblem(ve.AsProblemsDictionary());
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.Message);
+            }
         })
         .WithName("GetReservationById")
         .WithOpenApi();
@@ -35,12 +48,23 @@ public static class ReservationEndpoints
     {
         application.MapGet("/user-reservations/{userId}", async (int userId, IMediator mediator, CancellationToken token) =>
         {
-            var result = await mediator.Send(new GetAllUserReservationsQuery
+            try
             {
-                UserId = userId
-            }, token);
+                var result = await mediator.Send(new GetAllUserReservationsQuery
+                {
+                    UserId = userId
+                }, token);
 
-            return Results.Ok(result);
+                return Results.Ok(result);
+            }
+            catch (ValidationException ve)
+            {
+                return Results.ValidationProblem(ve.AsProblemsDictionary());
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.Message);
+            }
         })
         .WithName("GetAllUserReservations")
         .WithOpenApi();
@@ -60,6 +84,10 @@ public static class ReservationEndpoints
                 await mediator.Send(command, token);
 
                 return Results.Ok();
+            }
+            catch (ValidationException ve)
+            {
+                return Results.ValidationProblem(ve.AsProblemsDictionary());
             }
             catch (Exception ex)
             {

@@ -2,23 +2,22 @@
 using FlightProject.Application.Models.Commands;
 using FlightProject.Application.Models.Mappers;
 using FlightProject.Application.Models.Queries;
+using FlightProject.Application.Models.Validators.CommandValidators;
+using FlightProject.Application.Models.Validators.QueryValidators;
 using FlightProject.Domain.Models;
-using FlightProject.Domain.Repository.Cities;
 using FlightProject.Domain.Repository.Flights;
-using FlightProject.Domain.Repository.Planes;
+using FluentValidation;
 using MediatR;
 
 namespace FlightProject.Application.Services;
 
-internal class FlightService(IFlightRepository flightRepository, IPlaneRepository planeRepository, ICityRepository cityRepository)
+internal class FlightService(IFlightRepository flightRepository)
     :
     IRequestHandler<GetAllFlightsQuery, IEnumerable<FlightDto>>,
     IRequestHandler<GetFlightByIdQuery, FlightDto>,
     IRequestHandler<CreateFlightCommand>
 {
     private readonly IFlightRepository _flightRepository = flightRepository;
-    private readonly IPlaneRepository _planeRepository = planeRepository;
-    private readonly ICityRepository _cityRepository = cityRepository;
 
     public async Task<IEnumerable<FlightDto>> Handle(GetAllFlightsQuery request, CancellationToken cancellationToken)
     {
@@ -29,6 +28,10 @@ internal class FlightService(IFlightRepository flightRepository, IPlaneRepositor
 
     public async Task<FlightDto> Handle(GetFlightByIdQuery request, CancellationToken cancellationToken)
     {
+        var validator = new GetFlightByIdQueryValidator();
+
+        await validator.ValidateAndThrowAsync(request, cancellationToken);
+
         var result = await _flightRepository.GetAsync(request.FlightId, cancellationToken);
 
         return result.MapToDto();
@@ -36,14 +39,9 @@ internal class FlightService(IFlightRepository flightRepository, IPlaneRepositor
 
     public async Task Handle(CreateFlightCommand request, CancellationToken cancellationToken)
     {
-        //var plane = await _planeRepository.GetAsync(request.PlaneId, cancellationToken);
-        //ArgumentNullException.ThrowIfNull(plane, nameof(plane));
+        var validator = new CreateFlightCommandValidator();
 
-        //var sourceCity = await _cityRepository.GetAsync(request.SourceCityId, cancellationToken);
-        //ArgumentNullException.ThrowIfNull(sourceCity, nameof(sourceCity));
-
-        //var destinationCity = await _cityRepository.GetAsync(request.DestinationCityId, cancellationToken);
-        //ArgumentNullException.ThrowIfNull(destinationCity, nameof(destinationCity));
+        await validator.ValidateAndThrowAsync(request, cancellationToken);
 
         var model = new Flight
         {

@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlightProject.Domain", "Fli
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{D31E2816-58B6-4D5A-92B3-981BFA66F50C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightProject.Application", "..\FlightProject.Application\FlightProject.Application.csproj", "{E4580D25-2953-4D74-AAE6-962D6E78650B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlightProject.Application", "..\FlightProject.Application\FlightProject.Application.csproj", "{E4580D25-2953-4D74-AAE6-962D6E78650B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
