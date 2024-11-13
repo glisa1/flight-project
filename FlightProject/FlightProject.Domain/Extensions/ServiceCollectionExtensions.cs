@@ -16,6 +16,10 @@ public static class ServiceCollectionExtensions
         {
             optionsBuilder.UseNpgsql(connectionString);
         });
+
+        //services.AddIdentityApiEndpoints<IdentityUser>()
+        //    .AddEntityFrameworkStores<AppDbContext>();
+
         services.AddScoped<ICityRepository, CityRepository>();
         services.AddScoped<IFlightRepository, FlightRepository>();
         services.AddScoped<IReservationRepository, ReservationRepository>();

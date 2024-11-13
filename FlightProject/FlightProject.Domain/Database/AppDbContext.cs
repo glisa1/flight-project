@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FlightProject.Domain.Database;
 
-internal class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbContext<IdentityUser>(options)
+public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbContext<IdentityUser>(options)
 {
     public DbSet<Flight> Flights { get; set; }
     public DbSet<City> Cities { get; set; }

@@ -1,6 +1,8 @@
 using FlightProject.Application.Extensions;
+using FlightProject.Domain.Database;
 using FlightProject.Domain.Extensions;
 using FlightProject.WebApi.Extensions;
+using Microsoft.AspNetCore.Identity;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +20,9 @@ builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
 });
 
+builder.Services.AddIdentityApiEndpoints<IdentityUser>()
+            .AddEntityFrameworkStores<AppDbContext>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -29,6 +34,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGetEndpoints();
+app.MapCustomEndpoints();
+app.MapIdentityApi<IdentityUser>();
 
 app.Run();
