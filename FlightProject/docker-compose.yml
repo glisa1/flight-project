@@ -17,3 +17,10 @@ services:
       - 5432:5432
     volumes:
       - ./.containers/flightproject-db:/var/lib/postgresql/data
+
+  flightproject.client:
+    image: ${DOCKER_REGISTRY-}flightprojectclient
+    container_name: flightproject.client
+    build:
+      context: .
+      dockerfile: FlightProject.UIClient/Dockerfile

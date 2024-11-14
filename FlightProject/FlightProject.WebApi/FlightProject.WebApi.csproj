@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\FlightProject.Application\FlightProject.Application.csproj" />
+    <ProjectReference Include="..\FlightProject.Application\FlightProject.Application.csproj" />
   </ItemGroup>
 
 </Project>
