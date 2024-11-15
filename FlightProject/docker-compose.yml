@@ -21,6 +21,8 @@ services:
   flightproject.client:
     image: ${DOCKER_REGISTRY-}flightprojectclient
     container_name: flightproject.client
+    ports:
+      - 5251:8080
     build:
       context: .
       dockerfile: FlightProject.UIClient/Dockerfile
