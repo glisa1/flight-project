@@ -1,7 +1,34 @@
 ﻿@page "/"
+@using FlightProject.UIClient.Models
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<h1>Hello, pick a flight!</h1>
 
 Welcome to your new app.
+
+<div>
+    @foreach (var flight in GetFlights())
+    {
+        <div>
+            <label>From: @flight.DepartureCityName</label>
+            <label>To: @flight.DestinationCityName</label>
+            <label>Departure: @flight.Departure</label>
+            <label>Arrival: @flight.Arrival</label>
+            <label>Price: @flight.Price</label>
+            <label>Number od seats: @flight.NumberOfSeats</label>
+        </div>
+    }
+</div>
+    @code{
+    private List<FlightDto> flights = new List<FlightDto>();
+
+    private List<FlightDto> GetFlights()
+    {
+        flights.Add(new FlightDto(1, 70, DateTime.Now, DateTime.Now.AddHours(2), "NP", "BG", 50));
+        flights.Add(new FlightDto(2, 20, DateTime.Now, DateTime.Now.AddHours(2), "BG", "NS", 50));
+        flights.Add(new FlightDto(3, 90, DateTime.Now, DateTime.Now.AddHours(2), "NP", "NS", 50));
+
+        return flights;
+    }
+}
