@@ -1,0 +1,57 @@
+﻿@page "/flight-details/{id:int}"
+
+@rendermode InteractiveServer
+
+<h1>@SourceCityName to @DestinationCityName</h1>
+
+<h3>Flight Details</h3>
+
+<div>
+
+    <div>
+        <ul>
+            <li>
+                From:
+                @SourceCityName
+            </li>
+            <li>
+                To:
+                @DestinationCityName
+            </li>
+            <li>
+                Departure:
+                @Departure
+            </li>
+            <li>
+                Arrival:
+                @Arrival
+            </li>
+            <li>
+                Price:
+                @Price
+            </li>
+            <li>
+                Number of seats:
+                @NumberOfSeats
+            </li>
+        </ul>
+    </div>
+
+    <button class="btn-primary" @onclick="_ => { ReserveFlight(); }">Reserve flight</button>
+
+</div>
+@code {
+    [Parameter]
+    public int Id { get; init; }
+
+    private string SourceCityName = "Novi Pazar";
+    private string DestinationCityName = "Beograd";
+    private DateTime Departure = DateTime.Now;
+    private DateTime Arrival = DateTime.Now.AddHours(2);
+    private double Price = 90;
+    private int NumberOfSeats = 50;
+
+    private void ReserveFlight(){
+        Console.WriteLine("Flight reserved.");
+    }
+}

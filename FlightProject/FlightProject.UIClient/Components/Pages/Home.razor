@@ -1,34 +1,79 @@
 ﻿@page "/"
+
 @using FlightProject.UIClient.Models
+
+@attribute [StreamRendering]
+@rendermode InteractiveServer
+
+@inject NavigationManager Navigation
 
 <PageTitle>Home</PageTitle>
 
 <h1>Hello, pick a flight!</h1>
 
-Welcome to your new app.
-
 <div>
-    @foreach (var flight in GetFlights())
+    @if (flights is null)
     {
-        <div>
-            <label>From: @flight.DepartureCityName</label>
-            <label>To: @flight.DestinationCityName</label>
-            <label>Departure: @flight.Departure</label>
-            <label>Arrival: @flight.Arrival</label>
-            <label>Price: @flight.Price</label>
-            <label>Number od seats: @flight.NumberOfSeats</label>
+        <p><em>Loading...</em></p>
+    }
+    else{
+        <div class="flight-container">
+            @foreach (var flight in flights)
+            {
+                <div class="flight-card" @onclick="_ => { OpenFlightDetails(flight.FlightId); }">
+                    <ul>
+                        <li>
+                            From:
+                            @flight.DepartureCityName
+                        </li>
+                        <li>
+                            To:
+                            @flight.DestinationCityName
+                        </li>
+                        <li>
+                            Departure:
+                            @flight.Departure
+                        </li>
+                        <li>
+                            Arrival:
+                            @flight.Arrival
+                        </li>
+                        <li>
+                            Price:
+                            @flight.Price
+                        </li>
+                    </ul>
+                </div>
+            }
         </div>
     }
 </div>
-    @code{
-    private List<FlightDto> flights = new List<FlightDto>();
+@code{
+    private List<FlightDto>? flights;
 
-    private List<FlightDto> GetFlights()
+    private List<FlightDto> InitializeFlights()
     {
+        flights = new List<FlightDto>();
+
         flights.Add(new FlightDto(1, 70, DateTime.Now, DateTime.Now.AddHours(2), "NP", "BG", 50));
         flights.Add(new FlightDto(2, 20, DateTime.Now, DateTime.Now.AddHours(2), "BG", "NS", 50));
         flights.Add(new FlightDto(3, 90, DateTime.Now, DateTime.Now.AddHours(2), "NP", "NS", 50));
+        flights.Add(new FlightDto(4, 30, DateTime.Now, DateTime.Now.AddHours(2), "BG", "NS", 50));
+        flights.Add(new FlightDto(5, 60, DateTime.Now, DateTime.Now.AddHours(2), "KG", "NS", 50));
+        flights.Add(new FlightDto(6, 80, DateTime.Now, DateTime.Now.AddHours(2), "UE", "NS", 50));
+        flights.Add(new FlightDto(7, 120, DateTime.Now, DateTime.Now.AddHours(2), "NI", "NS", 50));
 
         return flights;
+    }
+
+    protected override async Task OnInitializedAsync(){
+        // Simulate asynchronous loading to demonstrate streaming rendering
+        await Task.Delay(500);
+
+        InitializeFlights();
+    }
+
+    private void OpenFlightDetails(int flightId){
+        Navigation.NavigateTo($"flight-details/{flightId}");
     }
 }
