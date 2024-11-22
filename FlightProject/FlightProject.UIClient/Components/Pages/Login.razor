@@ -1,0 +1,35 @@
+﻿@page "/login"
+@using FlightProject.UIClient.Models
+
+<h3>Login</h3>
+
+<div>
+    <EditForm FormName="Login" Model=@loginModel OnSubmit=@FormSubmitted>
+        <div class="form-group">
+            <label for="Email">Email</label>
+            <InputText @bind-value=loginModel!.Email class="form-control" id="Email" />
+        </div>
+        <div class="form-group">
+            <label for="Password">Password</label>
+            <InputText @bind-value=loginModel!.Password class="form-control" id="Password" type="password" />
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+    </EditForm>
+</div>
+
+@code {
+    [SupplyParameterFromForm]
+    private LoginModel? loginModel { get; set; }
+
+    protected override void OnInitialized()
+    {
+        loginModel ??= new();
+    }
+
+    private void FormSubmitted(EditContext editContext)
+    {
+        Console.WriteLine($"Email: {loginModel?.Email}");
+        Console.WriteLine($"Password: {loginModel?.Password}");
+        Console.WriteLine("Submitted.");
+    }
+}
