@@ -8,7 +8,7 @@ public class AuthService(string endpoint) : IAuthService
 
     public Task<bool> AuthenticateAsync(string username, string password)
     {
-        _httpClient.
+        throw new NotImplementedException();
     }
 
     public Task Logut()
