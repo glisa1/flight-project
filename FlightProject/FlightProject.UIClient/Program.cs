@@ -1,10 +1,13 @@
 using FlightProject.UIClient.Components;
+using FlightProject.UIClient.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.AddSingleton<IAuthService>(new AuthService(builder.Configuration.GetSection("Endpoints:WebApi").Value!));
 
 var app = builder.Build();
 

@@ -32,7 +32,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// This should be looked up as sensitive data is passed to the api
+//app.UseHttpsRedirection();
+app.UseAuthentication();
 
 app.MapCustomEndpoints();
 app.MapIdentityApi<IdentityUser>();

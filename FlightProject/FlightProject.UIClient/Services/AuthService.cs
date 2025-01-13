@@ -1,17 +1,36 @@
-﻿
-namespace FlightProject.UIClient.Services;
+﻿namespace FlightProject.UIClient.Services;
 
-public class AuthService(string endpoint) : IAuthService
+public class AuthService(string serviceUrl) : IAuthService
 {
-    private readonly string _apiEndpoint = endpoint;
+    //private readonly string endpoint = endpoint;
     private readonly HttpClient _httpClient = new();
 
-    public Task<bool> AuthenticateAsync(string username, string password)
+    public async Task<bool> AuthenticateAsync(string username, string password, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var endpoint = $"{serviceUrl}/login";
+            var response = await _httpClient.PostAsJsonAsync(
+                endpoint,
+                new
+                {
+                    email = username,
+                    password
+                },
+                cancellationToken);
+
+            string responseBody = await response.Content.ReadAsStringAsync(cancellationToken);
+            Console.WriteLine(responseBody);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return false;
+        }
     }
 
-    public Task Logut()
+    public Task Logut(CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }

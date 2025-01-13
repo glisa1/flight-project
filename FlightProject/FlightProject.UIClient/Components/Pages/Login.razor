@@ -1,5 +1,8 @@
 ﻿@page "/login"
 @using FlightProject.UIClient.Models
+@using FlightProject.UIClient.Services
+
+@inject IAuthService _authService
 
 <h3>Login</h3>
 
@@ -26,10 +29,16 @@
         loginModel ??= new();
     }
 
-    private void FormSubmitted(EditContext editContext)
+    private async Task FormSubmitted(EditContext editContext)
     {
-        Console.WriteLine($"Email: {loginModel?.Email}");
-        Console.WriteLine($"Password: {loginModel?.Password}");
-        Console.WriteLine("Submitted.");
+        var authResult = await _authService.AuthenticateAsync(loginModel?.Email!, loginModel?.Password!);
+        if (authResult)
+        {
+            Console.WriteLine("Submitted.");
+        }
+        else
+        {
+            Console.WriteLine("Login failed.");
+        }
     }
 }

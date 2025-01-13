@@ -2,6 +2,6 @@
 
 public interface IAuthService
 {
-    Task<bool> AuthenticateAsync(string username, string password);
-    Task Logut();
+    Task<bool> AuthenticateAsync(string username, string password, CancellationToken cancellationToken = default);
+    Task Logut(CancellationToken cancellationToken = default);
 }
