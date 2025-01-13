@@ -49,26 +49,3 @@ h1:focus {
 .darker-border-checkbox.form-check-input {
     border-color: #929292;
 }
-
-.flight-card {
-    cursor: pointer;
-    border: solid 1px black;
-    width: 12.5rem;
-}
-
-.flight-card:hover {
-    cursor: pointer;
-    border: solid 1px black;
-    width: 12.5rem;
-    background-color: lightgray;
-    border-color: lightgray;
-}
-
-.flight-container {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    width: 100%;
-    justify-content: flex-start;
-    gap: 0.938rem;
-}
