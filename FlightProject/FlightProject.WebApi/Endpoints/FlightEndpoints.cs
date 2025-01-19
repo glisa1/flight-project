@@ -1,6 +1,5 @@
 ﻿using FlightProject.Application.Models.Commands;
 using FlightProject.Application.Models.Queries;
-using FlightProject.WebApi.Extensions;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -27,22 +26,12 @@ public static class FlightEndpoints
     {
         application.MapGet("/flight/{id}", async (int id, IMediator mediator, CancellationToken token) =>
         {
-            try
-            {
-                var result = await mediator.Send(new GetFlightByIdQuery { FlightId = id }, token);
+            var result = await mediator.Send(new GetFlightByIdQuery { FlightId = id }, token);
 
-                return Results.Ok(result);
-            }
-            catch (ValidationException ve)
-            {
-                return Results.ValidationProblem(ve.AsProblemsDictionary());
-            }
-            catch (Exception ex)
-            {
-                return Results.Problem(ex.Message);
-            }
+            return Results.Ok(result);
         })
         .WithName("GetFlightById")
+        .WithTags(Tags.Flight)
         .WithOpenApi();
     }
 
@@ -50,18 +39,12 @@ public static class FlightEndpoints
     {
         application.MapGet("/flights", async (IMediator mediator, CancellationToken token) =>
         {
-            try
-            {
-                var result = await mediator.Send(new GetAllFlightsQuery(), token);
+            var result = await mediator.Send(new GetAllFlightsQuery(), token);
 
-                return Results.Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return Results.Problem(ex.Message);
-            }
+            return Results.Ok(result);
         })
         .WithName("GetAllFlights")
+        .WithTags(Tags.Flight)
         .WithOpenApi();
     }
 
@@ -78,23 +61,12 @@ public static class FlightEndpoints
     {
         application.MapPost("/flight", async ([FromBody] CreateFlightCommand command, IMediator mediator, CancellationToken token) =>
         {
-            try
-            {
-                await mediator.Send(command, token);
+            await mediator.Send(command, token);
 
-                return Results.Ok();
-
-            }
-            catch (ValidationException ve)
-            {
-                return Results.ValidationProblem(ve.AsProblemsDictionary());
-            }
-            catch (Exception ex)
-            {
-                return Results.Problem(ex.Message);
-            }
+            return Results.Ok();
         })
         .WithName("CreateFlight")
+        .WithTags(Tags.Flight)
         .WithOpenApi();
     }
 
