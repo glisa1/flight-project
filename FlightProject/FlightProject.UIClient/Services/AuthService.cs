@@ -1,17 +1,19 @@
-﻿namespace FlightProject.UIClient.Services;
+﻿using FlightProject.UIClient.Models;
 
-public class AuthService(string serviceUrl) : IAuthService
+namespace FlightProject.UIClient.Services;
+
+internal class AuthService(string serviceUrl) : IAuthService
 {
     //private readonly string endpoint = endpoint;
+    private readonly string _endpoint = $"{serviceUrl}/login";
     private readonly HttpClient _httpClient = new();
 
-    public async Task<bool> AuthenticateAsync(string username, string password, CancellationToken cancellationToken = default)
+    public async Task<AuthToken?> AuthenticateAsync(string username, string password, CancellationToken cancellationToken = default)
     {
         try
         {
-            var endpoint = $"{serviceUrl}/login";
             var response = await _httpClient.PostAsJsonAsync(
-                endpoint,
+                _endpoint,
                 new
                 {
                     email = username,
@@ -19,14 +21,14 @@ public class AuthService(string serviceUrl) : IAuthService
                 },
                 cancellationToken);
 
-            string responseBody = await response.Content.ReadAsStringAsync(cancellationToken);
-            Console.WriteLine(responseBody);
-            return true;
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadFromJsonAsync<AuthToken>(cancellationToken);
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
-            return false;
+            return null;
         }
     }
 

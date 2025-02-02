@@ -1,7 +1,9 @@
-﻿namespace FlightProject.UIClient.Services;
+﻿using FlightProject.UIClient.Models;
 
-public interface IAuthService
+namespace FlightProject.UIClient.Services;
+
+internal interface IAuthService
 {
-    Task<bool> AuthenticateAsync(string username, string password, CancellationToken cancellationToken = default);
+    Task<AuthToken?> AuthenticateAsync(string username, string password, CancellationToken cancellationToken = default);
     Task Logut(CancellationToken cancellationToken = default);
 }
