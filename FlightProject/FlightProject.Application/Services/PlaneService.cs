@@ -12,7 +12,7 @@ using MediatR;
 
 namespace FlightProject.Application.Services;
 
-internal class PlaneService(IPlaneRepository _repository) :
+internal sealed class PlaneService(IPlaneRepository _repository) :
     IRequestHandler<GetPlanesQuery, IEnumerable<PlaneDto>>,
     IRequestHandler<GetPlaneByIdQuery, PlaneDto>,
     IRequestHandler<CreatePlaneCommand>

@@ -10,5 +10,6 @@ public static class WebApplicationExtensions
         app.MapPlaneEndpoints();
         app.MapReservationEndpoints();
         app.MapFlightEndpoints();
+        app.MapAuthEndpoints();
     }
 }

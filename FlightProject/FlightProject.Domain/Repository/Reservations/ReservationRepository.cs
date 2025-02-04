@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FlightProject.Domain.Repository.Reservations;
 
-internal class ReservationRepository(AppDbContext dbContext) : IReservationRepository
+internal sealed class ReservationRepository(AppDbContext dbContext) : IReservationRepository
 {
     private readonly AppDbContext _appDbContext = dbContext;
 

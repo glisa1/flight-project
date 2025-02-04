@@ -11,7 +11,7 @@ using MediatR;
 
 namespace FlightProject.Application.Services;
 
-internal class FlightService(IFlightRepository flightRepository)
+internal sealed class FlightService(IFlightRepository flightRepository)
     :
     IRequestHandler<GetAllFlightsQuery, IEnumerable<FlightDto>>,
     IRequestHandler<GetFlightByIdQuery, FlightDto>,

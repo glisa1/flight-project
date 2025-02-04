@@ -11,7 +11,7 @@ using MediatR;
 
 namespace FlightProject.Application.Services;
 
-internal class CityService(ICityRepository repository) :
+internal sealed class CityService(ICityRepository repository) :
     IRequestHandler<GetCitiesQuery, IEnumerable<CityDto>>,
     IRequestHandler<CreateCityCommand>
 {

@@ -1,4 +1,5 @@
 ﻿using FlightProject.Domain.Database;
+using FlightProject.Domain.Repository.Auth;
 using FlightProject.Domain.Repository.Cities;
 using FlightProject.Domain.Repository.Flights;
 using FlightProject.Domain.Repository.Planes;
@@ -17,12 +18,10 @@ public static class ServiceCollectionExtensions
             optionsBuilder.UseNpgsql(connectionString);
         });
 
-        //services.AddIdentityApiEndpoints<IdentityUser>()
-        //    .AddEntityFrameworkStores<AppDbContext>();
-
         services.AddScoped<ICityRepository, CityRepository>();
         services.AddScoped<IFlightRepository, FlightRepository>();
         services.AddScoped<IReservationRepository, ReservationRepository>();
         services.AddScoped<IPlaneRepository, PlaneRepository>();
+        services.AddScoped<IAuthRepository, AuthRepository>();
     }
 }

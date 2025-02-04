@@ -11,7 +11,7 @@ using MediatR;
 
 namespace FlightProject.Application.Services;
 
-internal class ReservationService(
+internal sealed class ReservationService(
     IReservationRepository _reservationRepository
     )
     :

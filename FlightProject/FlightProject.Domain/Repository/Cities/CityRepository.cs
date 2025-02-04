@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FlightProject.Domain.Repository.Cities;
 
-internal class CityRepository(AppDbContext dbContext) : ICityRepository
+internal sealed class CityRepository(AppDbContext dbContext) : ICityRepository
 {
     private readonly AppDbContext _appDbContext = dbContext;
 

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FlightProject.Domain.Repository.Planes;
 
-internal class PlaneRepository(AppDbContext dbContext) : IPlaneRepository
+internal sealed class PlaneRepository(AppDbContext dbContext) : IPlaneRepository
 {
     private readonly AppDbContext _appDbContext = dbContext;
 

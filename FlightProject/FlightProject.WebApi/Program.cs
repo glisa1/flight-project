@@ -5,10 +5,13 @@ using FlightProject.WebApi.Extensions;
 using FlightProject.WebApi.Infrastructure;
 using FlightProject.WebApi.Middleware;
 using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using System.Reflection;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,10 +35,33 @@ builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
 });
 
-builder.Services.AddIdentityApiEndpoints<IdentityUser>()
-            .AddEntityFrameworkStores<AppDbContext>();
+builder.Services.AddIdentityCore<IdentityUser>()
+            //.AddIdentityApiEndpoints<IdentityUser>()  
+            .AddEntityFrameworkStores<AppDbContext>()
+            .AddDefaultTokenProviders()
+            .AddApiEndpoints();
 
-builder.Services.AddAuthentication().AddBearerToken();
+//builder.Services.AddAuthentication()
+//    .AddCookie(IdentityConstants.ApplicationScheme)
+//    .AddBearerToken(IdentityConstants.BearerScheme);
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+    };
+});
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
@@ -64,6 +90,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapCustomEndpoints();
-app.MapIdentityApi<IdentityUser>();
+//app.MapIdentityApi<IdentityUser>();
 
 app.Run();
