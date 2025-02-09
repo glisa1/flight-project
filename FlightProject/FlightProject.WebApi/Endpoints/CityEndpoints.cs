@@ -1,5 +1,6 @@
 ﻿using FlightProject.Application.Models.Commands;
 using FlightProject.Application.Models.Queries;
+using FlightProject.WebApi.Extensions;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -25,7 +26,7 @@ public static class CityEndpoints
         {
             var result = await mediator.Send(new GetCitiesQuery(), token);
 
-            return Results.Ok(result);
+            return result.Match(Results.Ok, Results.BadRequest);
         })
         .WithName("GetAllCities")
         .WithTags(Tags.Cities)
@@ -42,9 +43,9 @@ public static class CityEndpoints
     {
         application.MapPost("/city", async ([FromBody] CreateCityCommand command, IMediator mediator, CancellationToken token) =>
         {
-            await mediator.Send(command, token);
+            var result = await mediator.Send(command, token);
 
-            return Results.Ok();
+            return result.Match(Results.Ok, Results.BadRequest);
         })
         .WithName("CreateCity")
         .WithTags(Tags.Cities)
