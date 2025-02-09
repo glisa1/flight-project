@@ -4,5 +4,6 @@ namespace FlightProject.Domain.Repository.Auth;
 
 public interface IAuthRepository
 {
-    Task<IdentityUser?> GetUserByEmailAsync(string email, string password, CancellationToken cancellationToken);
+    Task<IdentityUser?> GetUserByEmailAsync(string email, CancellationToken cancellationToken);
+    Task<string> CreateUserAsync(IdentityUser user, CancellationToken cancellationToken);
 }
