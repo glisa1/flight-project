@@ -1,10 +1,10 @@
-﻿namespace FlightProject.Shared;
+﻿//namespace FlightProject.Shared;
 
-public record ValidationError(Error[] errors)
-    : Error("Validation.General", "One or more validation errors occurred", ErrorType.Validation)
-{
-    public Error[] Errors { get; } = errors;
+//public record ValidationError(Error[] errors)
+//    : Error("Validation.General", "One or more validation errors occurred", ErrorType.Validation)
+//{
+//    public Error[] Errors { get; } = errors;
 
-    public static ValidationError FromResults(IEnumerable<Result> results) =>
-        new(results.Where(r => r.IsFailure).Select(r => r.Error).ToArray());
-}
+//    public static ValidationError FromResults(IEnumerable<Result> results) =>
+//        new(results.Where(r => r.IsFailure).Select(r => r.Error).ToArray());
+//}

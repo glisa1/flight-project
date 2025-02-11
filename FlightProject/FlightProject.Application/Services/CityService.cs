@@ -1,4 +1,5 @@
-﻿using FlightProject.Application.Models;
+﻿using FlightProject.Application.Extensions;
+using FlightProject.Application.Models;
 using FlightProject.Application.Models.Commands;
 using FlightProject.Application.Models.Mappers;
 using FlightProject.Application.Models.Queries;
@@ -7,7 +8,6 @@ using FlightProject.Domain.Models;
 using FlightProject.Domain.Repository;
 using FlightProject.Domain.Repository.Cities;
 using FlightProject.Shared;
-using FluentValidation;
 using MediatR;
 
 namespace FlightProject.Application.Services;
@@ -21,7 +21,13 @@ internal sealed class CityService(ICityRepository repository) :
     public async Task<Result<City>> Handle(CreateCityCommand request, CancellationToken cancellationToken)
     {
         var validator = new CreateCityCommandValidator();
-        await validator.ValidateAndThrowAsync(request, cancellationToken);
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+
+        if (!validationResult.IsValid)
+        {
+            return Result.ValidationFailure<City>(default, validationResult.Errors.GetErrors());
+        }
+
         var newCity = new City { Name = request.Name };
 
         await _repository.AddAsync(newCity, cancellationToken);
