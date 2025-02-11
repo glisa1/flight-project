@@ -11,6 +11,11 @@ namespace FlightProject.WebApi.Extensions
                 throw new InvalidOperationException("Result has not failed.");
             }
 
+            if (result.IsValidationErrorResult)
+            {
+                return Results.ValidationProblem(errors: GetErrors(result));
+            }
+
             return Results.Problem(
                 title: GetTitle(result.Error),
                 detail: GetDescription(result.Error),
@@ -53,17 +58,9 @@ namespace FlightProject.WebApi.Extensions
                 _ => "https://tools.ietf.org/html/rfc7231#section-6.6.1"
             };
 
-        //static Dictionary<string, object?>? GetErrors(Result result)
-        //{
-        //    if (result.Error is not ValidationError validationError)
-        //    {
-        //        return null;
-        //    }
-
-        //    return new Dictionary<string, object?>
-        //    {
-        //        { "errors", validationError.Errors }
-        //    };
-        //}
+        static Dictionary<string, string[]> GetErrors(Result result)
+        {
+            return result.ValidationErrors!.GroupBy(error => error.Code).ToDictionary(k => k.Key, v => v.Select(f => f.Description).ToArray());
+        }
     }
 }

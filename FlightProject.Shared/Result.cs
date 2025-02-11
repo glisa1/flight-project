@@ -6,12 +6,12 @@ public class Result
 {
     public Result(bool isSuccess, Error error)
     {
-        Errors = new List<Error>([error]);
+        Error = error;
         IsSuccess = isSuccess;
     }
     public Result(bool isSuccess, IEnumerable<Error> errors)
     {
-        Errors = errors;
+        ValidationErrors = errors;
         IsSuccess = isSuccess;
     }
 
@@ -19,7 +19,11 @@ public class Result
 
     public bool IsFailure => !IsSuccess;
 
-    public IEnumerable<Error> Errors { get; }
+    public bool IsValidationErrorResult => ValidationErrors != null;
+
+    public Error? Error { get; }
+
+    public IEnumerable<Error>? ValidationErrors { get; }
 
     public static Result Success() => new(true, Error.None);
     public static Result<TValue> Success<TValue>(TValue value) => new(value, true, Error.None);

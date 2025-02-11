@@ -25,7 +25,7 @@ internal sealed class CityService(ICityRepository repository) :
 
         if (!validationResult.IsValid)
         {
-            return Result.ValidationFailure<City>(default, validationResult.Errors.GetErrors());
+            return Result.ValidationFailure<City>(default, validationResult.Errors.MapValidationFailuresToErrors());
         }
 
         var newCity = new City { Name = request.Name };

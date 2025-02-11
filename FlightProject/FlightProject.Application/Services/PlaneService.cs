@@ -35,7 +35,7 @@ internal sealed class PlaneService(IPlaneRepository _repository) :
 
         if (!validationResult.IsValid)
         {
-            return Result.ValidationFailure(validationResult.Errors.GetErrors());
+            return Result.ValidationFailure(validationResult.Errors.MapValidationFailuresToErrors());
         }
 
         var model = new Plane
@@ -57,7 +57,7 @@ internal sealed class PlaneService(IPlaneRepository _repository) :
 
         if (!validationResult.IsValid)
         {
-            return Result.ValidationFailure<PlaneDto>(default, validationResult.Errors.GetErrors());
+            return Result.ValidationFailure<PlaneDto>(default, validationResult.Errors.MapValidationFailuresToErrors());
         }
 
         var result = await repository.GetAsync(request.Id, cancellationToken);
