@@ -28,13 +28,11 @@ internal sealed class PlaneRepository(AppDbContext dbContext) : IPlaneRepository
         await _appDbContext.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<Plane> GetAsync(int id, CancellationToken cancellationToken = default)
+    public async Task<Plane?> GetAsync(int id, CancellationToken cancellationToken = default)
     {
         var result = await _appDbContext.Planes
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
-
-        ArgumentNullException.ThrowIfNull(result);
 
         return result;
     }

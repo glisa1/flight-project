@@ -28,13 +28,11 @@ internal sealed class CityRepository(AppDbContext dbContext) : ICityRepository
         await _appDbContext.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<City> GetAsync(int id, CancellationToken cancellationToken = default)
+    public async Task<City?> GetAsync(int id, CancellationToken cancellationToken = default)
     {
         var result = await _appDbContext.Cities
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
-
-        ArgumentNullException.ThrowIfNull(result);
 
         return result;
     }

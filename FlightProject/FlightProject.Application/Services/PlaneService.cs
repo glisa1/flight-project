@@ -1,6 +1,6 @@
 ﻿using FlightProject.Application.Extensions;
-using FlightProject.Application.Models;
 using FlightProject.Application.Models.Commands;
+using FlightProject.Application.Models.DTOs;
 using FlightProject.Application.Models.Mappers;
 using FlightProject.Application.Models.Queries;
 using FlightProject.Application.Models.Validators.CommandValidators;
@@ -16,7 +16,7 @@ namespace FlightProject.Application.Services;
 internal sealed class PlaneService(IPlaneRepository _repository) :
     IRequestHandler<GetPlanesQuery, Result<IEnumerable<PlaneDto>>>,
     IRequestHandler<GetPlaneByIdQuery, Result<PlaneDto>>,
-    IRequestHandler<CreatePlaneCommand, Result>
+    IRequestHandler<CreatePlaneCommand, Result<PlaneDto>>
 {
     private readonly IRepository<Plane> repository = _repository;
 
@@ -27,7 +27,7 @@ internal sealed class PlaneService(IPlaneRepository _repository) :
         return Result.Success(result.MapToDto());
     }
 
-    public async Task<Result> Handle(CreatePlaneCommand request, CancellationToken cancellationToken)
+    public async Task<Result<PlaneDto>> Handle(CreatePlaneCommand request, CancellationToken cancellationToken)
     {
         var validator = new CreatePlaneCommandValidator();
 
@@ -35,7 +35,7 @@ internal sealed class PlaneService(IPlaneRepository _repository) :
 
         if (!validationResult.IsValid)
         {
-            return Result.ValidationFailure(validationResult.Errors.MapValidationFailuresToErrors());
+            return Result.ValidationFailure<PlaneDto>(default, validationResult.Errors.MapValidationFailuresToErrors());
         }
 
         var model = new Plane
@@ -46,7 +46,7 @@ internal sealed class PlaneService(IPlaneRepository _repository) :
 
         await repository.AddAsync(model, cancellationToken);
 
-        return Result.Success();
+        return Result.Success(model.MapToDto());
     }
 
     public async Task<Result<PlaneDto>> Handle(GetPlaneByIdQuery request, CancellationToken cancellationToken)

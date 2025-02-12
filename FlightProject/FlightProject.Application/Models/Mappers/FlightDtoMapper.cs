@@ -1,4 +1,5 @@
-﻿using FlightProject.Domain.Models;
+﻿using FlightProject.Application.Models.DTOs;
+using FlightProject.Domain.Models;
 
 namespace FlightProject.Application.Models.Mappers;
 
@@ -25,5 +26,20 @@ internal static class FlightDtoMapper
                 flight.Destination.Name,
                 flight.Plane.NumberOfSeats
             );
+    }
+
+    internal static FlightCreatedDto MapToCreatedDto(this Flight flight)
+    {
+        ArgumentNullException.ThrowIfNull(flight, nameof(flight));
+
+        return new FlightCreatedDto
+        (
+            flight.Id,
+            flight.SourceId,
+            flight.DestinationId,
+            flight.Departure,
+            flight.Arrival,
+            flight.Price
+        );
     }
 }

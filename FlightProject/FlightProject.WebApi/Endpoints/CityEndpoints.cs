@@ -45,7 +45,7 @@ public static class CityEndpoints
         {
             var result = await mediator.Send(command, token);
 
-            return result.Match(Results.Ok, Results.BadRequest);
+            return result.Match(Results.Ok, CustomResults.Problem);
         })
         .WithName("CreateCity")
         .WithTags(Tags.Cities)

@@ -4,7 +4,7 @@ namespace FlightProject.WebApi.Extensions
 {
     internal static class CustomResults
     {
-        internal static IResult Problem(this Result result)
+        internal static IResult Problem(Result result)
         {
             if (result.IsSuccess)
             {

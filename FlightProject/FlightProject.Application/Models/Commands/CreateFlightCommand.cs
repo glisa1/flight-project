@@ -1,8 +1,10 @@
-﻿using MediatR;
+﻿using FlightProject.Application.Models.DTOs;
+using FlightProject.Shared;
+using MediatR;
 
 namespace FlightProject.Application.Models.Commands;
 
-public class CreateFlightCommand : IRequest
+public class CreateFlightCommand : IRequest<Result<FlightCreatedDto>>
 {
     public int PlaneId { get; init; }
     public int SourceCityId { get; init; }

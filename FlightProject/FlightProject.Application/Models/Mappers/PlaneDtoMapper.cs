@@ -1,4 +1,5 @@
-﻿using FlightProject.Domain.Models;
+﻿using FlightProject.Application.Models.DTOs;
+using FlightProject.Domain.Models;
 
 namespace FlightProject.Application.Models.Mappers;
 

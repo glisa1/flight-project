@@ -28,15 +28,13 @@ internal sealed class ReservationRepository(AppDbContext dbContext) : IReservati
         await _appDbContext.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<Reservation> GetAsync(int id, CancellationToken cancellationToken = default)
+    public async Task<Reservation?> GetAsync(int id, CancellationToken cancellationToken = default)
     {
         var result = await _appDbContext.Reservations
             .Include(reservation => reservation.Flight.Plane)
             .Include(reservation => reservation.Flight.Source)
             .Include(reservation => reservation.Flight.Destination)
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
-
-        ArgumentNullException.ThrowIfNull(result);
 
         return result;
     }

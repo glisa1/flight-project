@@ -1,5 +1,6 @@
 ﻿using FlightProject.Application.Models.Commands;
 using FlightProject.Application.Models.Queries;
+using FlightProject.WebApi.Extensions;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -28,7 +29,7 @@ public static class FlightEndpoints
         {
             var result = await mediator.Send(new GetFlightByIdQuery { FlightId = id }, token);
 
-            return Results.Ok(result);
+            return result.Match(Results.Ok, CustomResults.Problem);
         })
         .WithName("GetFlightById")
         .WithTags(Tags.Flight)
@@ -41,7 +42,7 @@ public static class FlightEndpoints
         {
             var result = await mediator.Send(new GetAllFlightsQuery(), token);
 
-            return Results.Ok(result);
+            return result.Match(Results.Ok, CustomResults.Problem);
         })
         .WithName("GetAllFlights")
         .WithTags(Tags.Flight)
@@ -61,9 +62,9 @@ public static class FlightEndpoints
     {
         application.MapPost("/flight", async ([FromBody] CreateFlightCommand command, IMediator mediator, CancellationToken token) =>
         {
-            await mediator.Send(command, token);
+            var result = await mediator.Send(command, token);
 
-            return Results.Ok();
+            return result.Match(Results.Ok, CustomResults.Problem);
         })
         .WithName("CreateFlight")
         .WithTags(Tags.Flight)

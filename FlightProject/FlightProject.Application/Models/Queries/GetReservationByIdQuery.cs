@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FlightProject.Application.Models.DTOs;
+using MediatR;
 
 namespace FlightProject.Application.Models.Queries;
 

@@ -1,5 +1,5 @@
-﻿using FlightProject.Application.Models;
-using FlightProject.Application.Models.Commands;
+﻿using FlightProject.Application.Models.Commands;
+using FlightProject.Application.Models.DTOs;
 using FlightProject.Application.Models.Mappers;
 using FlightProject.Application.Models.Queries;
 using FlightProject.Application.Models.Validators.CommandValidators;
@@ -25,6 +25,8 @@ internal sealed class ReservationService(
         var validator = new CreateReservationCommandValidator();
 
         await validator.ValidateAndThrowAsync(request, cancellationToken);
+
+        //check if flight exists
 
         var model = new Reservation
         {

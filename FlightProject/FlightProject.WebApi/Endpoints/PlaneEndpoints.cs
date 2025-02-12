@@ -1,5 +1,6 @@
 ﻿using FlightProject.Application.Models.Commands;
 using FlightProject.Application.Models.Queries;
+using FlightProject.WebApi.Extensions;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -55,9 +56,9 @@ public static class PlaneEndpoints
     {
         application.MapPost("/plane", async ([FromBody] CreatePlaneCommand command, IMediator mediator, CancellationToken token) =>
         {
-            await mediator.Send(command, token);
+            var result = await mediator.Send(command, token);
 
-            return Results.Ok(command);
+            return result.Match(Results.Ok, CustomResults.Problem);
         })
         .WithName("CreatePlane")
         .WithTags(Tags.Plane)

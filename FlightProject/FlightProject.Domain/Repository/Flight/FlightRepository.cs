@@ -28,7 +28,7 @@ internal sealed class FlightRepository(AppDbContext dbContext) : IFlightReposito
         await _appDbContext.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<Flight> GetAsync(int id, CancellationToken cancellationToken = default)
+    public async Task<Flight?> GetAsync(int id, CancellationToken cancellationToken = default)
     {
         var result = await _appDbContext.Flights
             .Include(flight => flight.Plane)
@@ -36,8 +36,6 @@ internal sealed class FlightRepository(AppDbContext dbContext) : IFlightReposito
             .Include(flight => flight.Destination)
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
-
-        ArgumentNullException.ThrowIfNull(result);
 
         return result;
     }

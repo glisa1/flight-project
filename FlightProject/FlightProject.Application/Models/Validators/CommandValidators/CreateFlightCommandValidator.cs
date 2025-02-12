@@ -7,7 +7,7 @@ internal class CreateFlightCommandValidator : AbstractValidator<CreateFlightComm
 {
     public CreateFlightCommandValidator()
     {
-        RuleFor(command => command.SourceCityId).NotEmpty().GreaterThan(0);
+        RuleFor(command => command.SourceCityId).NotEmpty().GreaterThan(0).NotEqual(command => command.DestinationCityId);
         RuleFor(command => command.DestinationCityId).NotEmpty().GreaterThan(0);
         RuleFor(command => command.PlaneId).NotEmpty().GreaterThan(0);
 
