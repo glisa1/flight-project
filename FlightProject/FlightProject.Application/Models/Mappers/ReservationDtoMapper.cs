@@ -27,4 +27,9 @@ internal static class ReservationDtoMapper
                 reservation.Flight.Plane.Name
             );
     }
+
+    internal static ReservationCreatedDto MapToCreatedDto(this Reservation reservation)
+    {
+        return new ReservationCreatedDto(reservation.Id, reservation.FlightId, reservation.UserId);
+    }
 }

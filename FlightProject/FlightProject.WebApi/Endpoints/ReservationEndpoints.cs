@@ -1,5 +1,6 @@
 ﻿using FlightProject.Application.Models.Commands;
 using FlightProject.Application.Models.Queries;
+using FlightProject.WebApi.Extensions;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +27,7 @@ public static class ReservationEndpoints
         {
             var result = await mediator.Send(new GetReservationByIdQuery { Id = id }, token);
 
-            return Results.Ok(result);
+            return result.Match(Results.Ok, CustomResults.Problem);
         })
         .WithName("GetReservationById")
         .WithTags(Tags.Reservation)
@@ -42,7 +43,7 @@ public static class ReservationEndpoints
                 UserId = userId
             }, token);
 
-            return Results.Ok(result);
+            return result.Match(Results.Ok, CustomResults.Problem);
         })
         .WithName("GetAllUserReservations")
         .WithTags(Tags.Reservation)
@@ -58,9 +59,9 @@ public static class ReservationEndpoints
     {
         application.MapPost("/reservation", async ([FromBody] CreateReservationCommand command, IMediator mediator, CancellationToken token) =>
         {
-            await mediator.Send(command, token);
+            var result = await mediator.Send(command, token);
 
-            return Results.Ok();
+            return result.Match(Results.Ok, CustomResults.Problem);
         })
         .WithName("CreateReservation")
         .WithTags(Tags.Reservation)
